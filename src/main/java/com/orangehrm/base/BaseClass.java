@@ -3,15 +3,18 @@ package com.orangehrm.base;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -86,30 +89,33 @@ public class BaseClass {
 	 */
 
 	private synchronized void launchBrowser() {
-		String browser = prop.getProperty("browser");
+		String browser = prop.getProperty("browser").trim();
 		switch (browser.toLowerCase()) {
 		case "chrome":
 
 			// Create ChromeOptions
-			/*ChromeOptions chromeOptions = new ChromeOptions();
-			chromeOptions.addArguments("--headless"); // Run Chrome in headless mode
+			ChromeOptions chromeOptions = new ChromeOptions();
+			chromeOptions.addArguments("--headless=new"); // Run Chrome in headless mode
 			chromeOptions.addArguments("--disable-gpu"); // Disable GPU for headless mode
-			//options.addArguments("--window-size=1920,1080"); // Set window size
+			//chromeOptions.addArguments("--window-size=1920,1080"); // Set window size
 			chromeOptions.addArguments("--disable-notifications"); // Disable browser notifications
 			chromeOptions.addArguments("--no-sandbox"); // Required for some CI environments like Jenkins
 			chromeOptions.addArguments("--disable-dev-shm-usage"); // Resolve issues in resource-limited environments
-*/
-			ChromeOptions chromeOptions = new ChromeOptions();
-			chromeOptions.addArguments("--headless=new"); // modern headless mode
-		//	chromeOptions.addArguments("--window-size=1920,1080"); // recommended
-			chromeOptions.addArguments("--disable-notifications");
-			chromeOptions.addArguments("--no-sandbox");
-			chromeOptions.addArguments("--disable-dev-shm-usage");
 
 			// driver = new ChromeDriver();
 			driver.set(new ChromeDriver(chromeOptions)); // New Changes as per Thread
 			ExtentManager.registerDriver(getDriver());
 			logger.info("ChromeDriver Instance is created.");
+			
+			 ((ChromiumDriver) driver.get()).executeCdpCommand("Emulation.setDeviceMetricsOverride", Map.of(
+				        "width", 1920,
+				        "height", 1080,
+				        "deviceScaleFactor", 1,
+				        "mobile", false
+				    ));
+
+
+		
 			// break;
 			/*
 			 * WebDriverManager.chromedriver().setup();
@@ -131,6 +137,9 @@ public class BaseClass {
 
 			// driver = new FirefoxDriver();
 			driver.set(new FirefoxDriver(ffOptions)); // New Changes as per Thread
+			//WebDriver driver = new ChromeDriver(chromeOptions);
+			getDriver().manage().window().setSize(new Dimension(1920, 1080));
+
 			ExtentManager.registerDriver(getDriver());
 			logger.info("FirefoxDriver Instance is created.");
 			break;
