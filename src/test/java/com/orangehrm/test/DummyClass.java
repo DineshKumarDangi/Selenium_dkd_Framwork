@@ -7,9 +7,11 @@ import org.testng.annotations.Test;
 import com.orangehrm.base.BaseClass;
 import com.orangehrm.utilities.ExtentManager;
 
+
 public class DummyClass extends BaseClass {
 	@Test
 	public void dummyTest() {
+		// Test checkin
 		//ExtentManager.startTest("dummy Test1");		-- This has been implemented in TestListener
 		String pageTitle = getDriver().getTitle();
 		System.out.println("page title is: "+ pageTitle);
