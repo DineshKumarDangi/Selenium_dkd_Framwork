@@ -2,7 +2,7 @@ pipeline {
     agent any  
 
     tools {
-        maven 'apache-maven-3.9.9'
+        maven 'Maven'
     }
 
     environment {
@@ -18,6 +18,7 @@ pipeline {
                     bat "docker compose -f ${COMPOSE_PATH}\\docker-compose.yml up -d"
                     echo "Waiting for Selenium Grid to be ready..."
                     sleep 30 // Add a wait if needed
+                     sh 'mvn -v'
                 }
             }
         }
