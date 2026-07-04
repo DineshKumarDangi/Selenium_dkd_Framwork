@@ -11,7 +11,7 @@ import com.orangehrm.utilities.ExtentManager;
 public class DummyClass extends BaseClass {
 	@Test
 	public void dummyTest() {
-		// Test 123
+		// Test 123 -321
 		//ExtentManager.startTest("dummy Test1");		-- This has been implemented in TestListener
 		String pageTitle = getDriver().getTitle();
 		System.out.println("page title is: "+ pageTitle);
