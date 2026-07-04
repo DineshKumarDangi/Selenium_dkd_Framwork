@@ -65,6 +65,7 @@ pipeline {
             archiveArtifacts artifacts: '**/src/test/resources/ExtentReport/*.html', fingerprint: true
             junit 'target/surefire-reports/*.xml'
         }
+        
 
         success {
             emailext (
@@ -89,6 +90,7 @@ pipeline {
                 attachLog: true
             )
         }
+        
 
         failure {
             emailext (
