@@ -5,7 +5,6 @@ pipeline {
         maven 'Maven'
     }
 
-
     stages {
         
 
@@ -45,7 +44,6 @@ pipeline {
             junit 'target/surefire-reports/*.xml'
         }
         
-
         success {
             emailext (
                 to: 'dangi.dineshkumar1@gmail.com',
